@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package doremi;
+package doremi.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,18 +6,19 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author JoãoCarlos
+ * @author João Carlos Luis Pereira
+ *
  */
-public class GeneroTableModel extends AbstractTableModel {
+public class CantorTableModel extends AbstractTableModel {
 
-    private List<Genero> generos;
+    private List<Cantor> cantores;
 
-    GeneroTableModel() {
-        this.generos = new ArrayList<Genero>();
+    CantorTableModel() {
+        this.cantores = new ArrayList<Cantor>();
     }
 
-    public GeneroTableModel(List<Genero> generos) {
-        this.generos = generos;
+    public CantorTableModel(List<Cantor> cantores) {
+        this.cantores = cantores;
     }
 
     @Override
@@ -52,73 +48,73 @@ public class GeneroTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
         //numeros de linhas
-        return this.generos.size();
+        return this.cantores.size();
     }
 
     @Override
     public Object getValueAt(int linha, int coluna) {
         // Pega o sócio referente a linha especificada.
-        Genero gen = generos.get(linha);
+        Cantor cant = cantores.get(linha);
 
         switch (coluna) {
             case 0:
-                return gen.getNome();
+                return cant.getNome();
             default:
                 //Colocar valor diferente de 0 na coluna pra devolver o objrto
-                return gen;
+                return cant;
         }
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         // nesse caso as todas as colunas não são editaveis
-        return false;
+        return true;
     }
 
     @Override
     public void setValueAt(Object valor, int linha, int coluna) {
-        // aqui devemos atualizar o valor de nossos Generos
+        // aqui devemos atualizar o valor de nossos Cantors
         // vemos em qual linha ele esta
-        Genero gen = this.generos.get(linha);
+        Cantor cant = this.cantores.get(linha);
         // e vemos o que ser� atualizado
         switch (coluna) {
             case 0:
-                gen.setNome(valor.toString()); // mudamos o nome
+                cant.setNome(valor.toString()); // mudamos o nome
                 break;
         }
         // É importante notificar os listeners a cada alteracao
-        fireTableDataChanged();
+        fireTableDataChanged();       
     }
 
-    //Adiciona genero na lista
-    public void adiciona(Genero gen) {
-        generos.add(gen);
+    //Adiciona cantero na lista
+    public void adiciona(Cantor cant) {
+        cantores.add(cant);
         // informamos os listeners que a linha (size - 1) foi adicionada
-        fireTableRowsInserted(generos.size() - 1, generos.size() - 1);
+        fireTableRowsInserted(cantores.size() - 1, cantores.size() - 1);
     }
 
     //remove iten da lista
     public void deleta(int indice) {
-        generos.remove(indice);
+        cantores.remove(indice);
         fireTableRowsDeleted(indice, indice);
     }
 
     //retorna o indice da linha
-    public int getIndice(Genero gen) {
-        return generos.indexOf(gen);
+    public int getIndice(Cantor cant) {
+        return cantores.indexOf(cant);
     }
 
     //adiciona uma lista inteira
-    public void adicionaLista(List<Genero> generos) {
-        int i = this.generos.size();
-        this.generos.addAll(generos);
-        fireTableRowsInserted(i, i + generos.size());
+    public void adicionaLista(List<Cantor> canteros) {
+        int i = this.cantores.size();
+        this.cantores.addAll(canteros);
+        fireTableRowsInserted(i, i + canteros.size());
     }
 
     //limpa a lista
     public void limpaLista() {
-        int i = this.generos.size();
-        this.generos.clear();
+        int i = this.cantores.size();
+        this.cantores.clear();
         fireTableRowsDeleted(0, i - 1);
     }
 }

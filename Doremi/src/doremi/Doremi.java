@@ -1,5 +1,7 @@
 package doremi;
 
+import doremi.view.FTelaInicial;
+
 /**
  *
  * @author João Carlos Luis Pereira

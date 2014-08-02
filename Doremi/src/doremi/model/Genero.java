@@ -1,15 +1,12 @@
-package doremi;
-
-import java.io.Serializable;
+package doremi.model;
 
 /**
  *
  * @author João Carlos Luis Pereira
  *
  */
-public class Genero implements Comparable<Genero>, Serializable {
+public class Genero {
 
-    private static final long serialVersionUID = 1L;
     private Long id;
     private String nome;
 
@@ -18,7 +15,7 @@ public class Genero implements Comparable<Genero>, Serializable {
         this.nome = nome;
     }
 
-    Genero() {
+    public Genero() {
     }
 
     public Long getId() {
@@ -35,10 +32,5 @@ public class Genero implements Comparable<Genero>, Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    @Override
-    public int compareTo(Genero g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

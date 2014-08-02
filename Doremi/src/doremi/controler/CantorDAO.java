@@ -1,5 +1,6 @@
-package doremi;
+package doremi.controler;
 
+import doremi.model.Cantor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,19 +14,19 @@ import java.util.List;
  * @author João Carlos Luis Pereira
  *
  */
-public class GeneroDAO {
+public class CantorDAO {
 
     private String driver = "org.postgresql.Driver";
     private String url = "jdbc:postgresql://127.0.0.1:5432/BancoPOS";
     private String usuario = "postgres";
     private String senha = "postgres";
 
-    public void inserir(Genero genero) throws ClassNotFoundException, SQLException {
+    public void inserir(Cantor cantor) throws ClassNotFoundException, SQLException {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("insert into genero(nome) values(?)");
-        sql.setString(1, genero.getNome());
+        PreparedStatement sql = conexao.prepareStatement("insert into cantor(nome) values(?)");
+        sql.setString(1, cantor.getNome());
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();
@@ -36,7 +37,7 @@ public class GeneroDAO {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("delete from genero where id = ? ");
+        PreparedStatement sql = conexao.prepareStatement("delete from cantor where id = ? ");
         sql.setLong(1, id);
         sql.execute();
         // Fechar conexão com o banco.
@@ -44,50 +45,50 @@ public class GeneroDAO {
     }
 //altera usuario no banco
 
-    public void alterar(Genero genero) throws ClassNotFoundException, SQLException {
+    public void alterar(Cantor cantor) throws ClassNotFoundException, SQLException {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("update genero set nome= ? where id = ? ");
-        sql.setString(1, genero.getNome());
-        sql.setLong(4, genero.getId());
+        PreparedStatement sql = conexao.prepareStatement("update cantor set nome= ? where id = ? ");
+        sql.setString(1, cantor.getNome());
+        sql.setLong(4, cantor.getId());
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();
     }
 
-    public List<Genero> listarGeneros() throws ClassNotFoundException, SQLException {
-        List<Genero> generos = new ArrayList<Genero>();
+    public List<Cantor> listarCantors() throws ClassNotFoundException, SQLException {
+        List<Cantor> cantors = new ArrayList<Cantor>();
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("select * from genero");
+        PreparedStatement sql = conexao.prepareStatement("select * from cantor");
         ResultSet resultado = sql.executeQuery();
         while (resultado.next()) {
             //pega os valores do bd para popular a lista  
-            Genero novo = new Genero(resultado.getLong("id"), resultado.getString("nome"));
-            generos.add(novo);
+            Cantor novo = new Cantor(resultado.getLong("id"), resultado.getString("nome"));
+            cantors.add(novo);
         }
         // Fechar conexão com o banco.
         conexao.close();
-        // Retorne os generos.
-        return generos;
+        // Retorne os cantors.
+        return cantors;
     }
 
-    public Genero lerGenero(int id) throws ClassNotFoundException, SQLException {
+    public Cantor lerCantor(int id) throws ClassNotFoundException, SQLException {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("select * from genero where id = ?");
+        PreparedStatement sql = conexao.prepareStatement("select * from cantor where id = ?");
         sql.setInt(1, id);
         ResultSet resultado = sql.executeQuery();
-        Genero genero = null;
+        Cantor cantor = null;
         if (resultado.next()) {
-            genero = new Genero(resultado.getLong("id"), resultado.getString("nome"));
+            cantor = new Cantor(resultado.getLong("id"), resultado.getString("nome"));
         }
         // Fechar conexão com o banco.
         conexao.close();
-        // Retorne os generos.
-        return genero;
+        // Retorne os cantors.
+        return cantor;
     }
 }

@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package doremi;
+package doremi.view;
 
 /**
  *
- * @author egua
+ * @author João Carlos Luis Pereira
+ *
  */
 public class FTelaInicial extends javax.swing.JFrame {
 
@@ -27,11 +23,11 @@ public class FTelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBarraInicial = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMICantor = new javax.swing.JMenuItem();
+        jMIGenero = new javax.swing.JMenuItem();
+        jMIMusica = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
 
@@ -39,24 +35,29 @@ public class FTelaInicial extends javax.swing.JFrame {
 
         jMenu1.setText("Cadastros");
 
-        jMenuItem3.setText("Cantor");
-        jMenu1.add(jMenuItem3);
-
-        jMenuItem2.setText("Genero");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMICantor.setText("Cantor");
+        jMICantor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMICantorActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(jMICantor);
 
-        jMenuItem1.setText("Musica");
-        jMenu1.add(jMenuItem1);
+        jMIGenero.setText("Genero");
+        jMIGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIGeneroActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMIGenero);
 
-        jMenuBar1.add(jMenu1);
+        jMIMusica.setText("Musica");
+        jMenu1.add(jMIMusica);
+
+        jMenuBarraInicial.add(jMenu1);
 
         jMenu2.setText("Tocar musicas");
-        jMenuBar1.add(jMenu2);
+        jMenuBarraInicial.add(jMenu2);
 
         jMenu3.setText("Sair");
         jMenu3.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -64,9 +65,9 @@ public class FTelaInicial extends javax.swing.JFrame {
                 jMenu3StateChanged(evt);
             }
         });
-        jMenuBar1.add(jMenu3);
+        jMenuBarraInicial.add(jMenu3);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBarraInicial);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -86,13 +87,21 @@ public class FTelaInicial extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenu3StateChanged
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jMIGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIGeneroActionPerformed
         FGenero gen = new FGenero();
         gen.setLocation(this.location().getLocation());
         gen.setDefaultCloseOperation(gen.DO_NOTHING_ON_CLOSE);
         this.dispose();
         gen.show();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jMIGeneroActionPerformed
+
+    private void jMICantorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMICantorActionPerformed
+        FCantor cant = new FCantor();
+        cant.setLocation(this.location().getLocation());
+        cant.setDefaultCloseOperation(cant.DO_NOTHING_ON_CLOSE);
+        this.dispose();
+        cant.show();
+    }//GEN-LAST:event_jMICantorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,12 +139,12 @@ public class FTelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem jMICantor;
+    private javax.swing.JMenuItem jMIGenero;
+    private javax.swing.JMenuItem jMIMusica;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuBar jMenuBarraInicial;
     // End of variables declaration//GEN-END:variables
 }
