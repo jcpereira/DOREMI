@@ -7,8 +7,9 @@ import java.io.Serializable;
  * @author João Carlos Luis Pereira
  *
  */
-public class Genero implements Comparable<Genero>, Serializable{
+public class Genero implements Comparable<Genero>, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String nome;
 
@@ -17,7 +18,7 @@ public class Genero implements Comparable<Genero>, Serializable{
         this.nome = nome;
     }
 
-    Genero() {        
+    Genero() {
     }
 
     public Long getId() {

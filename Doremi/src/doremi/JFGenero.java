@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -24,7 +23,6 @@ import javax.swing.event.TableModelListener;
  */
 public class JFGenero extends JFrame implements TableModelListener {
 
-    private static final long serialVersionUID = 1L;
     private GeneroTableModel modelo;
     private JTable tabela;
     private JScrollPane scrollPane;
@@ -98,7 +96,7 @@ public class JFGenero extends JFrame implements TableModelListener {
         setTitle("Generos");
         pack();
         setLocationRelativeTo(null);
-      //  setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     @Override

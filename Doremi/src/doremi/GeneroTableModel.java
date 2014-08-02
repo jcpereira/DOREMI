@@ -15,7 +15,6 @@ import javax.swing.table.AbstractTableModel;
  */
 public class GeneroTableModel extends AbstractTableModel {
 
-    private static final long serialVersionUID = 1L;
     private List<Genero> generos;
 
     GeneroTableModel() {
@@ -25,7 +24,7 @@ public class GeneroTableModel extends AbstractTableModel {
     public GeneroTableModel(List<Genero> generos) {
         this.generos = generos;
     }
-    
+
     @Override
     public Class<?> getColumnClass(int coluna) {
         // todas as colunas representam uma String
@@ -58,7 +57,16 @@ public class GeneroTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int linha, int coluna) {
-        return this.generos.get(linha);
+        // Pega o sócio referente a linha especificada.
+        Genero gen = generos.get(linha);
+
+        switch (coluna) {
+            case 0:
+                return gen.getNome();
+            default:
+                //Colocar valor diferente de 0 na coluna pra devolver o objrto
+                return gen;
+        }
     }
 
     @Override

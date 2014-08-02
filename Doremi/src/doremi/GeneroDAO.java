@@ -32,12 +32,12 @@ public class GeneroDAO {
     }
 
 //    deleta ususario no banco
-    public void deletar(int id) throws ClassNotFoundException, SQLException {
+    public void deletar(Long id) throws ClassNotFoundException, SQLException {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
         PreparedStatement sql = conexao.prepareStatement("delete from genero where id = ? ");
-        sql.setInt(1, id);
+        sql.setLong(1, id);
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();

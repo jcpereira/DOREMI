@@ -5,11 +5,9 @@
  */
 package doremi;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -18,6 +16,8 @@ import javax.swing.JScrollPane;
 public class FGenero extends javax.swing.JFrame {
 
     private GeneroTableModel jTGeneroModel = null;
+    private GeneroDAO dao = new GeneroDAO();
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form FGenero
@@ -108,9 +108,6 @@ public class FGenero extends javax.swing.JFrame {
 
         jTGenero.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
                 {null}
             },
             new String [] {
@@ -179,69 +176,55 @@ public class FGenero extends javax.swing.JFrame {
 
     private void jBIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIncluirActionPerformed
         try {
-            GeneroDAO dao = new GeneroDAO();
             Genero genero = new Genero();
             genero.setNome(jTnome.getText());
             jTnome.setText("");
             dao.inserir(genero);
-            jTGeneroModel.adiciona(genero);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FGenero.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FGenero.class.getName()).log(Level.SEVERE, null, ex);
+            carregarLista();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
         }
     }//GEN-LAST:event_jBIncluirActionPerformed
 
     private void jBexcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexcluirActionPerformed
-        // TODO add your handling code here:
+        int indice = jTGenero.getSelectedRow();
+        if (indice != -1) {
+            Genero gen = (Genero) jTGeneroModel.getValueAt(indice, -1);
+            try {
+                dao.deletar(gen.getId());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
+            }
+            jTGeneroModel.deleta(indice);
+        }
     }//GEN-LAST:event_jBexcluirActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FGenero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FGenero().setVisible(true);
-            }
-        });
-    }
-
     private void carregarLista() {
-        GeneroDAO dao = new GeneroDAO();
         try {
             jTGeneroModel = new GeneroTableModel();
             jTGeneroModel.adicionaLista(dao.listarGeneros());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Meu primeiro programa gráfico!\n Obrigado, Curso Java Progressivo!");
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
         }
         jTGeneroModel.addTableModelListener(jTGenero);
         jTGenero.setModel(jTGeneroModel);
+        DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();
+        centralizado.setHorizontalAlignment(SwingConstants.CENTER);
+        jTGenero.getColumnModel().getColumn(0).setCellRenderer(centralizado);
         
+        
+        
+//    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();  
+//    DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();  
+//    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();  
+//      
+//    esquerda.setHorizontalAlignment(SwingConstants.LEFT);  
+//    centralizado.setHorizontalAlignment(SwingConstants.CENTER);  
+//    direita.setHorizontalAlignment(SwingConstants.RIGHT);  
+//      
+//    tabela.getColumnModel().getColumn(0).setCellRenderer(esquerda);  
+//    tabela.getColumnModel().getColumn(1).setCellRenderer(centralizado);  
+//    tabela.getColumnModel().getColumn(2).setCellRenderer(direita);  
     }
 
 
