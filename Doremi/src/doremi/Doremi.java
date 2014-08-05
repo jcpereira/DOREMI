@@ -12,7 +12,7 @@ import doremi.view.FTelaInicial;
  * CREATE TABLE cantor( id bigserial PRIMARY KEY, nome text );
  *
  * CREATE TABLE musica( id bigserial PRIMARY KEY, cantor_fk bigint, genero_fk
- * bigint, musica text,letra text );
+ * bigint, musica text, letra text, nome text );
  *
  * ALTER TABLE musica add constraint musica_genero_id foreign key (genero_fk)
  * references genero (id);

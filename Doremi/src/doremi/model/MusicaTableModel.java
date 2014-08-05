@@ -9,16 +9,16 @@ import javax.swing.table.AbstractTableModel;
  * @author João Carlos Luis Pereira
  *
  */
-public class CantorTableModel extends AbstractTableModel {
+public class MusicaTableModel extends AbstractTableModel {
 
-    private List<Cantor> cantores;
+    private List<Musica> musicas;
 
-    CantorTableModel() {
-        this.cantores = new ArrayList<Cantor>();
+    MusicaTableModel() {
+        this.musicas = new ArrayList<Musica>();
     }
 
-    public CantorTableModel(List<Cantor> cantores) {
-        this.cantores = cantores;
+    public MusicaTableModel(List<Musica> musicas) {
+        this.musicas = musicas;
     }
 
     @Override
@@ -48,20 +48,20 @@ public class CantorTableModel extends AbstractTableModel {
     @Override
     public int getRowCount() {
         //numeros de linhas
-        return this.cantores.size();
+        return this.musicas.size();
     }
 
     @Override
     public Object getValueAt(int linha, int coluna) {
         // Pega o sócio referente a linha especificada.
-        Cantor cant = cantores.get(linha);
+        Musica music = musicas.get(linha);
 
         switch (coluna) {
             case 0:
-                return cant.getNome();
+                return music.getNome();
             default:
                 //Colocar valor diferente de 0 na coluna pra devolver o objrto
-                return cant;
+                return music;
         }
     }
 
@@ -73,48 +73,48 @@ public class CantorTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object valor, int linha, int coluna) {
-        // aqui devemos atualizar o valor de nossos Cantors
+        // aqui devemos atualizar o valor de nossos Musicas
         // vemos em qual linha ele esta
-        Cantor cant = this.cantores.get(linha);
+        Musica music = this.musicas.get(linha);
         // e vemos o que ser� atualizado
         switch (coluna) {
             case 0:
-                cant.setNome(valor.toString()); // mudamos o nome
+                music.setNome(valor.toString()); // mudamos o nome
                 break;
         }
         // É importante notificar os listeners a cada alteracao
         fireTableDataChanged();       
     }
 
-    //Adiciona cantero na lista
-    public void adiciona(Cantor cant) {
-        cantores.add(cant);
+    //Adiciona musicero na lista
+    public void adiciona(Musica music) {
+        musicas.add(music);
         // informamos os listeners que a linha (size - 1) foi adicionada
-        fireTableRowsInserted(cantores.size() - 1, cantores.size() - 1);
+        fireTableRowsInserted(musicas.size() - 1, musicas.size() - 1);
     }
 
     //remove iten da lista
     public void deleta(int indice) {
-        cantores.remove(indice);
+        musicas.remove(indice);
         fireTableRowsDeleted(indice, indice);
     }
 
     //retorna o indice da linha
-    public int getIndice(Cantor cant) {
-        return cantores.indexOf(cant);
+    public int getIndice(Musica music) {
+        return musicas.indexOf(music);
     }
 
     //adiciona uma lista inteira
-    public void adicionaLista(List<Cantor> canteros) {
-        int i = this.cantores.size();
-        this.cantores.addAll(canteros);
-        fireTableRowsInserted(i, i + canteros.size());
+    public void adicionaLista(List<Musica> musiceros) {
+        int i = this.musicas.size();
+        this.musicas.addAll(musiceros);
+        fireTableRowsInserted(i, i + musiceros.size());
     }
 
     //limpa a lista
     public void limpaLista() {
-        int i = this.cantores.size();
-        this.cantores.clear();
+        int i = this.musicas.size();
+        this.musicas.clear();
         fireTableRowsDeleted(0, i - 1);
     }
 }

@@ -51,7 +51,7 @@ public class GeneroDAO {
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
         PreparedStatement sql = conexao.prepareStatement("update genero set nome= ? where id = ? ");
         sql.setString(1, genero.getNome());
-        sql.setLong(4, genero.getId());
+        sql.setLong(2, genero.getId());
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();
@@ -62,7 +62,7 @@ public class GeneroDAO {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("select * from genero");
+        PreparedStatement sql = conexao.prepareStatement("select * from genero order by nome ");
         ResultSet resultado = sql.executeQuery();
         while (resultado.next()) {
             //pega os valores do bd para popular a lista  

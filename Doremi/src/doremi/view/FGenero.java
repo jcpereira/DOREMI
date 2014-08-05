@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class FGenero extends javax.swing.JFrame {
 
+    private Genero genero = new Genero();
     private GeneroTableModel jTGeneroModel = null;
     private GeneroDAO dao = new GeneroDAO();
     private static final long serialVersionUID = 1L;
@@ -36,9 +37,9 @@ public class FGenero extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTnome = new javax.swing.JTextField();
+        jTNome = new javax.swing.JTextField();
         jBIncluir = new javax.swing.JButton();
-        jBexcluir = new javax.swing.JButton();
+        jBExcluir = new javax.swing.JButton();
         jBSair = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -46,6 +47,7 @@ public class FGenero extends javax.swing.JFrame {
         jTGenero = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Generos");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -61,10 +63,10 @@ public class FGenero extends javax.swing.JFrame {
             }
         });
 
-        jBexcluir.setText("Excluir");
-        jBexcluir.addActionListener(new java.awt.event.ActionListener() {
+        jBExcluir.setText("Excluir");
+        jBExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBexcluirActionPerformed(evt);
+                jBExcluirActionPerformed(evt);
             }
         });
 
@@ -87,11 +89,11 @@ public class FGenero extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTnome))
+                        .addComponent(jTNome))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jBIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(60, 60, 60)
-                        .addComponent(jBexcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jBExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                         .addComponent(jBSair, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -101,12 +103,12 @@ public class FGenero extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTnome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBIncluir)
-                    .addComponent(jBexcluir)
+                    .addComponent(jBExcluir)
                     .addComponent(jBSair))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -127,6 +129,11 @@ public class FGenero extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jTGenero.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTGeneroMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(jTGenero);
@@ -168,10 +175,14 @@ public class FGenero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSairActionPerformed
-        FTelaInicial ini = new FTelaInicial();
-        ini.setLocation(this.location().getLocation());
-        this.dispose();
-        ini.show();
+        if (jBSair.getText().equals("Limpar")) {
+            carregarLista();
+        } else {
+            FTelaInicial ini = new FTelaInicial();
+            ini.setLocation(this.location().getLocation());
+            this.dispose();
+            ini.show();
+        }
     }//GEN-LAST:event_jBSairActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -182,14 +193,17 @@ public class FGenero extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jBIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIncluirActionPerformed
-        if (!jTnome.getText().equals("")) {
+        if (!jTNome.getText().equals("")) {
             try {
-                Genero gen = new Genero();
-                gen.setNome(jTnome.getText());
-                jTnome.setText("");
-                dao.inserir(gen);
+                genero.setNome(jTNome.getText());
+                if (jBIncluir.getText().equals("Incluir")) {
+                    dao.inserir(genero);
+                    JOptionPane.showMessageDialog(null, "Genero " + genero.getNome() + " incluido corretamente!");
+                } else {
+                    dao.alterar(genero);
+                    JOptionPane.showMessageDialog(null, "Genero " + genero.getNome() + " alterado corretamente!");
+                }
                 carregarLista();
-                JOptionPane.showMessageDialog(null, "Genero " + gen.getNome() + " incluido corretamente!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
             }
@@ -198,7 +212,7 @@ public class FGenero extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBIncluirActionPerformed
 
-    private void jBexcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexcluirActionPerformed
+    private void jBExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBExcluirActionPerformed
         int indice = jTGenero.getSelectedRow();
         if (indice != -1) {
             Genero gen = (Genero) jTGeneroModel.getValueAt(indice, -1);
@@ -210,7 +224,18 @@ public class FGenero extends javax.swing.JFrame {
             }
             jTGeneroModel.deleta(indice);
         }
-    }//GEN-LAST:event_jBexcluirActionPerformed
+        carregarLista();
+    }//GEN-LAST:event_jBExcluirActionPerformed
+
+    private void jTGeneroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTGeneroMouseClicked
+        int indice = jTGenero.getSelectedRow();
+        if (indice != -1) {
+            genero = (Genero) jTGeneroModel.getValueAt(indice, -1);
+            jBIncluir.setText("Alterar");
+            jBSair.setText("Limpar");
+            jTNome.setText(genero.getNome());
+        }
+    }//GEN-LAST:event_jTGeneroMouseClicked
 
     private void carregarLista() {
         try {
@@ -224,6 +249,9 @@ public class FGenero extends javax.swing.JFrame {
         centralizado.setHorizontalAlignment(SwingConstants.CENTER);
         jTGenero.getColumnModel().getColumn(0).setCellRenderer(centralizado);
 
+        jTNome.setText("");
+        jBIncluir.setText("Incluir");
+        jBSair.setText("Sair");
 //    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();  
 //    DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();  
 //    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();  
@@ -239,15 +267,15 @@ public class FGenero extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBExcluir;
     private javax.swing.JButton jBIncluir;
     private javax.swing.JButton jBSair;
-    private javax.swing.JButton jBexcluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTGenero;
-    private javax.swing.JTextField jTnome;
+    private javax.swing.JTextField jTNome;
     // End of variables declaration//GEN-END:variables
 
 }

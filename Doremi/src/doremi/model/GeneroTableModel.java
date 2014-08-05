@@ -68,7 +68,7 @@ public class GeneroTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         // nesse caso as todas as colunas não são editaveis
-        return true;
+        return false;
     }
 
     @Override

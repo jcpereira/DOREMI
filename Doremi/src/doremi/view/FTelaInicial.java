@@ -52,6 +52,11 @@ public class FTelaInicial extends javax.swing.JFrame {
         jMenu1.add(jMIGenero);
 
         jMIMusica.setText("Musica");
+        jMIMusica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMIMusicaActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMIMusica);
 
         jMenuBarraInicial.add(jMenu1);
@@ -102,6 +107,14 @@ public class FTelaInicial extends javax.swing.JFrame {
         this.dispose();
         cant.show();
     }//GEN-LAST:event_jMICantorActionPerformed
+
+    private void jMIMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIMusicaActionPerformed
+        FMusica music = new FMusica();
+        music.setLocation(this.location().getLocation());
+        music.setDefaultCloseOperation(music.DO_NOTHING_ON_CLOSE);
+        this.dispose();
+        music.show();
+    }//GEN-LAST:event_jMIMusicaActionPerformed
 
     /**
      * @param args the command line arguments
