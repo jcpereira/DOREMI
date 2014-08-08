@@ -25,8 +25,10 @@ public class MusicaDAO {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("insert into musica(nome) values(?)");
+        PreparedStatement sql = conexao.prepareStatement("insert into musica(nome,musica,letra) values(?,?,?)");
         sql.setString(1, musica.getNome());
+        sql.setString(2, musica.getMusica());
+        sql.setString(3, musica.getLetra());
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();
@@ -49,9 +51,11 @@ public class MusicaDAO {
         // Criar uma conexão com o banco.
         Class.forName(driver);
         Connection conexao = DriverManager.getConnection(url, usuario, senha);
-        PreparedStatement sql = conexao.prepareStatement("update musica set nome= ? where id = ? ");
+        PreparedStatement sql = conexao.prepareStatement("update musica set nome= ?, musica = ?, letra = ? where id = ? ");
         sql.setString(1, musica.getNome());
-        sql.setLong(2, musica.getId());
+        sql.setString(2, musica.getMusica());
+        sql.setString(3, musica.getLetra());
+        sql.setLong(4, musica.getId());
         sql.execute();
         // Fechar conexão com o banco.
         conexao.close();
@@ -66,7 +70,7 @@ public class MusicaDAO {
         ResultSet resultado = sql.executeQuery();
         while (resultado.next()) {
             //pega os valores do bd para popular a lista  
-            Musica novo = new Musica(resultado.getLong("id"), resultado.getString("nome"));
+            Musica novo = new Musica(resultado.getLong("id"), resultado.getString("nome"), resultado.getString("musica"), resultado.getString("letra"));
             musicas.add(novo);
         }
         // Fechar conexão com o banco.
@@ -84,7 +88,7 @@ public class MusicaDAO {
         ResultSet resultado = sql.executeQuery();
         Musica musica = null;
         if (resultado.next()) {
-            musica = new Musica(resultado.getLong("id"), resultado.getString("nome"));
+            musica = new Musica(resultado.getLong("id"), resultado.getString("nome"), resultado.getString("musica"), resultado.getString("letra"));
         }
         // Fechar conexão com o banco.
         conexao.close();

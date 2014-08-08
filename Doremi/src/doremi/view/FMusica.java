@@ -1,10 +1,20 @@
 package doremi.view;
 
+import doremi.controler.CantorDAO;
+import doremi.controler.GeneroDAO;
 import doremi.controler.MusicaDAO;
+import doremi.model.Cantor;
+import doremi.model.Genero;
 import doremi.model.Musica;
 import doremi.model.MusicaTableModel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -16,7 +26,9 @@ public class FMusica extends javax.swing.JFrame {
 
     private Musica musica = new Musica();
     private MusicaTableModel jTMusicaModel = null;
-    private MusicaDAO dao = new MusicaDAO();
+    private MusicaDAO daoMusuca = new MusicaDAO();
+    private CantorDAO daoCantor = new CantorDAO();
+    private GeneroDAO daoGenero = new GeneroDAO();
     private static final long serialVersionUID = 1L;
 
     /**
@@ -24,7 +36,11 @@ public class FMusica extends javax.swing.JFrame {
      */
     public FMusica() {
         initComponents();
-        carregarLista();
+        try {
+            carregarLista();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + ex.getMessage());
+        }
     }
 
     /**
@@ -37,7 +53,9 @@ public class FMusica extends javax.swing.JFrame {
     private void initComponents() {
 
         jDMusica = new javax.swing.JDialog();
+        jFCMusica = new javax.swing.JFileChooser();
         jDLetra = new javax.swing.JDialog();
+        jFCLetra = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
         jTNome = new javax.swing.JTextField();
         jBIncluir = new javax.swing.JButton();
@@ -56,26 +74,34 @@ public class FMusica extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTAMusica = new javax.swing.JTable();
 
+        jDMusica.setTitle("Abrir musica.mp3");
+
         javax.swing.GroupLayout jDMusicaLayout = new javax.swing.GroupLayout(jDMusica.getContentPane());
         jDMusica.getContentPane().setLayout(jDMusicaLayout);
         jDMusicaLayout.setHorizontalGroup(
             jDMusicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jFCMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jDMusicaLayout.setVerticalGroup(
             jDMusicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDMusicaLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jFCMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jDLetraLayout = new javax.swing.GroupLayout(jDLetra.getContentPane());
         jDLetra.getContentPane().setLayout(jDLetraLayout);
         jDLetraLayout.setHorizontalGroup(
             jDLetraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(jDLetraLayout.createSequentialGroup()
+                .addComponent(jFCLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jDLetraLayout.setVerticalGroup(
             jDLetraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDLetraLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jFCLetra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -114,6 +140,10 @@ public class FMusica extends javax.swing.JFrame {
         jLabel2.setText("Musica");
 
         jLabel3.setText("Letra");
+
+        jTMusica.setEditable(false);
+
+        jTLetra.setEditable(false);
 
         jCGenero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -261,7 +291,11 @@ public class FMusica extends javax.swing.JFrame {
 
     private void jBSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSairActionPerformed
         if (jBSair.getText().equals("Limpar")) {
-            carregarLista();
+            try {
+                carregarLista();
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + ex.getMessage());
+            }
         } else {
             FTelaInicial ini = new FTelaInicial();
             ini.setLocation(this.location().getLocation());
@@ -278,22 +312,31 @@ public class FMusica extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void jBIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIncluirActionPerformed
-        if (!jTNome.getText().equals("")) {
+        if (!jTNome.getText().equals("") || !jTMusica.getText().equals("") || !jTLetra.getText().equals("")) {
             try {
                 musica.setNome(jTNome.getText());
+                musica.setMusica(jTMusica.getText());
+                musica.setLetra(jTLetra.getText());
+
                 if (jBIncluir.getText().equals("Incluir")) {
-                    dao.inserir(musica);
-                    JOptionPane.showMessageDialog(null, "Musica " + musica.getNome() + " incluido corretamente!");
+                    daoMusuca.inserir(musica);
+                    JOptionPane.showMessageDialog(null, "Musica " + musica.getNome() + " incluida corretamente!");
                 } else {
-                    dao.alterar(musica);
-                    JOptionPane.showMessageDialog(null, "Musica " + musica.getNome() + " alterado corretamente!");
+                    daoMusuca.alterar(musica);
+                    JOptionPane.showMessageDialog(null, "Musica " + musica.getNome() + " alterada corretamente!");
                 }
                 carregarLista();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Por favor preencha o campo nome!");
+            if (!jTNome.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor preencha o campo nome!");
+            } else if (!jTMusica.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor preencha o campo musica!");
+            } else if (!jTLetra.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor preencha o campo letra!");
+            }
         }
     }//GEN-LAST:event_jBIncluirActionPerformed
 
@@ -302,14 +345,18 @@ public class FMusica extends javax.swing.JFrame {
         if (indice != -1) {
             Musica music = (Musica) jTMusicaModel.getValueAt(indice, -1);
             try {
-                dao.deletar(music.getId());
+                daoMusuca.deletar(music.getId());
                 JOptionPane.showMessageDialog(null, "Musica " + music.getNome() + " excluido corretamente!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
             }
             jTMusicaModel.deleta(indice);
         }
-        carregarLista();
+        try {
+            carregarLista();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + ex.getMessage());
+        }
     }//GEN-LAST:event_jBExcluirActionPerformed
 
     private void jTAMusicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTAMusicaMouseClicked
@@ -319,20 +366,40 @@ public class FMusica extends javax.swing.JFrame {
             jBIncluir.setText("Alterar");
             jBSair.setText("Limpar");
             jTNome.setText(musica.getNome());
+            jCCantor.setSelectedItem(musica.getCantor());
+            jCCantor.setSelectedItem(musica.getGenero());
         }
     }//GEN-LAST:event_jTAMusicaMouseClicked
 
     private void jBLetraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLetraActionPerformed
-        jDLetra.show();
+        jFCLetra.setFileFilter(new FileNameExtensionFilter("Arquivo de texto", "txt"));
+        jFCLetra.setAcceptAllFileFilterUsed(false);
+        int retorno = jFCLetra.showSaveDialog(null);
+        if (retorno == JFileChooser.APPROVE_OPTION) {
+            if (!jFCLetra.getSelectedFile().getAbsolutePath().endsWith(".txt")) {
+                jTLetra.setText(jFCLetra.getSelectedFile().getAbsolutePath() + ".txt");
+            } else {
+                jTLetra.setText(jFCLetra.getSelectedFile().getAbsolutePath());
+            }
+        }
     }//GEN-LAST:event_jBLetraActionPerformed
 
     private void jBMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBMusicaActionPerformed
-        jDMusica.show();
+        jFCMusica.setFileFilter(new FileNameExtensionFilter("Arquivo de audio", "mp3"));
+        jFCMusica.setAcceptAllFileFilterUsed(false);
+        int retorno = jFCMusica.showSaveDialog(null);
+        if (retorno == JFileChooser.APPROVE_OPTION) {
+            if (!jFCMusica.getSelectedFile().getAbsolutePath().endsWith(".mp3")) {
+                jTMusica.setText(jFCMusica.getSelectedFile().getAbsolutePath() + ".mp3");
+            } else {
+                jTMusica.setText(jFCMusica.getSelectedFile().getAbsolutePath());
+            }
+        }
     }//GEN-LAST:event_jBMusicaActionPerformed
 
-    private void carregarLista() {
+    private void carregarLista() throws ClassNotFoundException {
         try {
-            jTMusicaModel = new MusicaTableModel(dao.listarMusicas());
+            jTMusicaModel = new MusicaTableModel(daoMusuca.listarMusicas());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
         }
@@ -342,20 +409,36 @@ public class FMusica extends javax.swing.JFrame {
         centralizado.setHorizontalAlignment(SwingConstants.CENTER);
         jTAMusica.getColumnModel().getColumn(0).setCellRenderer(centralizado);
 
+        jCCantor.removeAllItems();
+        jCCantor.addItem(new Cantor());
+        List<Cantor> cantores = null;
+        try {
+            cantores = daoCantor.listarCantors();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
+        }
+        for (int i = 0; i < cantores.size(); i++) {
+            jCCantor.addItem(cantores.get(i));
+        }
+        jCCantor.setEditable(true);
+
+        jCGenero.removeAllItems();
+        jCGenero.addItem(new Cantor());
+        List<Genero> generos = null;
+        try {
+            generos = daoGenero.listarGeneros();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao acessar banco de dados! \n" + e.getMessage());
+        }
+
+        for (int i = 0; i < generos.size(); i++) {
+            jCCantor.addItem(generos.get(i));
+        }
+        jCCantor.setEditable(true);
+
         jTNome.setText("");
         jBIncluir.setText("Incluir");
         jBSair.setText("Sair");
-//    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();  
-//    DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();  
-//    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();  
-//      
-//    esquerda.setHorizontalAlignment(SwingConstants.LEFT);  
-//    centralizado.setHorizontalAlignment(SwingConstants.CENTER);  
-//    direita.setHorizontalAlignment(SwingConstants.RIGHT);  
-//      
-//    tabela.getColumnModel().getColumn(0).setCellRenderer(esquerda);  
-//    tabela.getColumnModel().getColumn(1).setCellRenderer(centralizado);  
-//    tabela.getColumnModel().getColumn(2).setCellRenderer(direita);  
     }
 
 
@@ -369,6 +452,8 @@ public class FMusica extends javax.swing.JFrame {
     private javax.swing.JComboBox jCGenero;
     private javax.swing.JDialog jDLetra;
     private javax.swing.JDialog jDMusica;
+    private javax.swing.JFileChooser jFCLetra;
+    private javax.swing.JFileChooser jFCMusica;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

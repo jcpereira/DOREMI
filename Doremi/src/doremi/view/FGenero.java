@@ -252,17 +252,6 @@ public class FGenero extends javax.swing.JFrame {
         jTNome.setText("");
         jBIncluir.setText("Incluir");
         jBSair.setText("Sair");
-//    DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();  
-//    DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();  
-//    DefaultTableCellRenderer direita = new DefaultTableCellRenderer();  
-//      
-//    esquerda.setHorizontalAlignment(SwingConstants.LEFT);  
-//    centralizado.setHorizontalAlignment(SwingConstants.CENTER);  
-//    direita.setHorizontalAlignment(SwingConstants.RIGHT);  
-//      
-//    tabela.getColumnModel().getColumn(0).setCellRenderer(esquerda);  
-//    tabela.getColumnModel().getColumn(1).setCellRenderer(centralizado);  
-//    tabela.getColumnModel().getColumn(2).setCellRenderer(direita);  
     }
 
 
